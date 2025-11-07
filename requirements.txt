@@ -11,6 +11,7 @@ pydantic-settings==2.1.0
 sqlalchemy==2.0.25
 
 # LLM and AI
+tiktoken==0.7.0
 langchain==0.1.7
 langchain-openai==0.0.5
 openai==1.12.0
