@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  backend:
+    image: REPLACE_BACKEND_IMAGE
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=lab_db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LLM_MODEL=${LLM_MODEL:-gpt-4o-mini}
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  frontend:
+    image: REPLACE_FRONTEND_IMAGE
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=lab_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
